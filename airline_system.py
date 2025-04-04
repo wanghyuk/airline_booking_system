@@ -82,19 +82,18 @@ class SeatBookingSystem():
             print("This seat is unavailable, please choose another one.")
 
     #free a seat if it has been booked
-    def free_seat(self,seat):
-        while True:
-            if not self.is_valid_seat(seat):
-                continue 
+    def free_seat(self, seat):
+        if not self.is_valid_seat(seat):
+            return
 
-            booking_ref = self.seats.get(seat)
-            if booking_ref in self.bookings:
-                del self.bookings[booking_ref]  # Remove passenger details
-                self.seats[seat] = "F"
-                print(f"Seat {seat} is now free.")
-                break
-            else:
-                print(" This seat is already free or has no valid booking.")
+        booking_ref = self.seats.get(seat)
+        if booking_ref in self.bookings:
+            del self.bookings[booking_ref]
+            self.seats[seat] = "F"
+            print(f"Seat {seat} is now free.")
+        else:
+            print("This seat is already free or has no valid booking.")
+
             
     #Generate a unique 8-character booking reference
     def generate_booking_reference(self):
@@ -132,8 +131,9 @@ class SeatBookingSystem():
             print("2. Book a seat")
             print("3. Free a seat")
             print("4. Show booking status")
-            print("5. Exit program")
-            print("6. Lookup booking by reference")
+            print("5. Lookup booking by reference")
+            print("6. Exit program")
+            
             choice = input("please enter your choice: ").strip()
             
             if choice == "1":
@@ -147,21 +147,22 @@ class SeatBookingSystem():
                 self.book_seat(seat)
             elif choice == "3":
                 seat = input("Please enter the seat which need to be free: ").strip().upper()
-                if self.is_valid_seat(seat):
-                    self.free_seat(seat)
+                self.free_seat(seat)
             elif choice == "4":
                 self.display_seats()
             elif choice == "5":
+                self.lookup_booking_by_reference()
+            elif choice == "6":
                 print("Bye!")
                 break
-            elif choice == "6":
-                self.lookup_booking_by_reference()
             else:
                 print("Please enter again")
             
 if __name__ == "__main__":
     system = SeatBookingSystem()
     system.run()
+            
+
             
             
             
